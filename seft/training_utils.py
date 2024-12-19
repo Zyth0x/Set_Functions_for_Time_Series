@@ -52,11 +52,10 @@ def init_hyperparam_space(logdir, hparams, metrics):
         hp.HParam('dataset', hp.Discrete(medical_ts_datasets.builders)),
         hp.HParam('model', hp.Discrete(seft.models.__all__))
     ] + list(hparams)
-    sess = tf.compat.v1.keras.backend.get_session()
     with tf.compat.v2.summary.create_file_writer(logdir).as_default() as w:
-        sess.run(w.init())
-        sess.run(hp.hparams_config(hparams=hparams, metrics=metrics))
-        sess.run(w.flush())
+        w.init()
+        hp.hparams_config(hparams=hparams, metrics=metrics)
+        w.flush()
 
 
 def get_padding_values(input_dataset_types, label_padding=-100):

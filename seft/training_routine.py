@@ -101,7 +101,7 @@ class TrainingLoop(Callable):
             )
             callbacks.append(CSVLogger(join(self.rundir, 'metrics.csv')))
             callbacks.append(ModelCheckpoint(
-                join(self.rundir, 'model_weights.hdf5'),
+                join(self.rundir, 'model_weights.weights.h5'),
                 save_best_only=True,
                 save_weights_only=True,
                 monitor='val_' + self.task.monitor_quantity,
@@ -309,8 +309,8 @@ class TrainingLoop(Callable):
             loss=self.task.loss,
             metrics=['accuracy'],
             # TODO: Continue here
-            sample_weight_mode=(
-                None if self.task.class_weights is None else "temporal")
+            #sample_weight_mode=(
+            #    None if self.task.class_weights is None else "temporal")
         )
         history = self.model.fit(
             train_iter,

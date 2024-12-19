@@ -101,7 +101,6 @@ def set_seed_random_number_generators(seed):
     random.seed(seed.to_bytes(4, byteorder='little', signed=False), version=2)
     np.random.seed(seed)
     tf.compat.v1.set_random_seed(seed)
-    tf.compat.v1.keras.backend.set_session(tf.compat.v1.get_default_session())
 
 
 def main():
@@ -114,7 +113,7 @@ def main():
             log_dir = create_subfolder(args.log_dir)
         else:
             log_dir = args.log_dir
-            os.makedirs(log_dir, exist_ok=False)
+            os.makedirs(log_dir, exist_ok=True)
         logger.debug(f'Saving results to {log_dir}')
 
     hyperparameters = handle_special_cases(

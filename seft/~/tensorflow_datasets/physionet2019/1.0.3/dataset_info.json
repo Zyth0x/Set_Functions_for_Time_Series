@@ -1,0 +1,53 @@
+{
+  "citation": "@article{reyna2019early,\n  title={Early prediction of sepsis from clinical data:\n         the PhysioNet/Computing in Cardiology Challenge 2019},\n  author={Reyna, M and Josef, C and Jeter, R and Shashikumar, S and Westover, M\n          and Nemati, S and Clifford, G and Sharma, A},\n  journal={Critical Care Medicine},\n  year={2019}\n}",
+  "description": "The PhysioNet Computing in Cardiology Challenge 2019.",
+  "downloadSize": "42992324",
+  "fileFormat": "tfrecord",
+  "location": {
+    "urls": [
+      "https://physionet.org/content/challenge-2019/1.0.0/"
+    ]
+  },
+  "moduleName": "medical_ts_datasets.physionet_2019",
+  "name": "physionet2019",
+  "splits": [
+    {
+      "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
+      "name": "train",
+      "numBytes": "144189790",
+      "shardLengths": [
+        "12906",
+        "12907"
+      ]
+    },
+    {
+      "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
+      "name": "validation",
+      "numBytes": "35920688",
+      "shardLengths": [
+        "6454"
+      ]
+    },
+    {
+      "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
+      "name": "test",
+      "numBytes": "45320216",
+      "shardLengths": [
+        "8066"
+      ]
+    }
+  ],
+  "supervisedKeys": {
+    "tuple": {
+      "items": [
+        {
+          "featureKey": "combined"
+        },
+        {
+          "featureKey": "target"
+        }
+      ]
+    }
+  },
+  "version": "1.0.3"
+}

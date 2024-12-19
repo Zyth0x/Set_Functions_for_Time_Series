@@ -22,10 +22,10 @@ class PositionalEncoding(tf.keras.layers.Layer):
     def build(self, input_shape):
         assert len(input_shape) == 3
         self.timescales = self.add_weight(
-            'timescales',
-            (self._num_timescales, ),
-            trainable=False,
-            initializer=tf.keras.initializers.Constant(self.get_timescales())
+            name='timescales',  # Use 'name' as a keyword argument
+            shape=(self._num_timescales,),  # Ensure 'shape' is a tuple, not just a plain object
+            trainable=False,  # Set the weight to be non-trainable
+            initializer=tf.keras.initializers.Constant(self.get_timescales())  # Use the correct initializer
         )
 
     def __call__(self, times):

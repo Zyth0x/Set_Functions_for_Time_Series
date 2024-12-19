@@ -66,21 +66,26 @@ class WarmUpScheduler(tf.keras.callbacks.Callback):
 
     def on_batch_end(self, batch, logs=None):
         self.global_step += 1
-        lr = tf.keras.backend.get_value(self.model.optimizer.lr)
+        lr = tf.keras.backend.get_value(self.model.optimizer.learning_rate)
         self.learning_rates.append(lr)
 
     def on_batch_begin(self, batch, logs=None):
+        # Update the learning rate during warmup
         if self.global_step <= self.warmup_steps:
-            increase = \
-                (self.final_lr - self.warmup_learning_rate) / self.warmup_steps
+            # Calculate the learning rate for warmup
+            increase = (self.final_lr - self.warmup_learning_rate) / self.warmup_steps
             new_lr = self.warmup_learning_rate + (increase * self.global_step)
-            tf.keras.backend.set_value(self.model.optimizer.lr, new_lr)
+
+            # Print debug info if verbose is enabled
             if self.verbose > 0:
-                print(
-                    f'Warmup - learning rate: '
-                    f'{new_lr:.6f}/{self.final_lr:.6f}',
-                    end=''
-                )
+                print(f"Warmup - step: {self.global_step}, learning rate: {new_lr:.6f}")
+
+            # Update learning rate using optimizer's assign method
+            lr_tensor = self.model.optimizer.learning_rate
+            lr_tensor.assign(new_lr)
+
+        # Increment global step
+        self.global_step += 1
 
 
 class EvaluationCallback(tf.keras.callbacks.Callback):
@@ -182,10 +187,9 @@ class HParamsCallback(tf.keras.callbacks.Callback):
         self._hparams = hparams
 
     def on_train_begin(self, logs=None):
-        sess = tf.compat.v1.keras.backend.get_session()
         with self._writer.as_default() as w:
-            sess.run(w.init())
-            sess.run(hp.hparams(self._hparams))
-            sess.run(w.flush())
+            w.init()
+            hp.hparams(self._hparams)
+            w.flush()
 
 
